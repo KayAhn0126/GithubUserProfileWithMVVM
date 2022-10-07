@@ -9,10 +9,9 @@ import Combine
 import Kingfisher
 
 class UserProfileViewController: UIViewController {
-    @Published private(set) var user: UserProfile?
     var subscriptions = Set<AnyCancellable>()
     
-    var network = NetworkService(configuration: .default)
+    var viewModel: SearchViewModel!
     
     @IBOutlet weak var thumbnail: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
@@ -24,6 +23,7 @@ class UserProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel = SearchViewModel(network: NetworkService(configuration: .default))
         setupUI()
         embendSearchControl()
         bind()
@@ -37,7 +37,6 @@ class UserProfileViewController: UIViewController {
     // search control
     private func embendSearchControl() {
         self.navigationItem.title = "Search"
-        
         let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "kayahn0126"
@@ -48,7 +47,7 @@ class UserProfileViewController: UIViewController {
     
     // bind
     private func bind() {
-        $user
+        viewModel.$user
             .receive(on: RunLoop.main)
             .sink { [unowned self] result in
                 self.update(result)
@@ -79,38 +78,11 @@ class UserProfileViewController: UIViewController {
 extension UserProfileViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         let keyword = searchController.searchBar.text
-        print("search: \(keyword)")
     }
 }
 
 extension UserProfileViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("button clicked: \(searchBar.text)")
-        
-        guard let keyword = searchBar.text, !keyword.isEmpty else { return }
-        
-        //Resource
-        let resource = Resource<UserProfile>(
-            base: "https://api.github.com/",
-            path: "users/\(keyword)",
-            params: [:],
-            header: ["Content-Type": "application/json"]
-        )
-        
-        // Network Service
-        network.load(resource)
-            .receive(on: RunLoop.main) //subscriber를 main 스레드에서 실행.
-            .sink { completion in
-                switch completion {
-                case.failure(let error):
-                    self.user = nil
-                    print("Error Code : \(error)")
-                case.finished :
-                    print("Completed : \(completion)")
-                    break
-                }
-            } receiveValue: { value in
-                self.user = value
-            }.store(in: &subscriptions)
+        viewModel.search(userText: searchBar)
     }
 }
