@@ -47,31 +47,17 @@ class UserProfileViewController: UIViewController {
     
     // bind
     private func bind() {
-        viewModel.$user
+        viewModel.selectedUser
             .receive(on: RunLoop.main)
-            .sink { [unowned self] result in
-                self.update(result)
+            .sink { [unowned self] _ in
+                self.nameLabel.text = self.viewModel.name
+                self.loginLabel.text = self.viewModel.login
+                self.followerLabel.text = self.viewModel.follower
+                self.followingLabel.text = self.viewModel.following
+                self.firstDateLabel.text = self.viewModel.firstDate
+                self.latestUpdateLabel.text = self.viewModel.latestUpdate
+                self.thumbnail.kf.setImage(with: viewModel.avatarUrl)
             }.store(in: &subscriptions)
-    }
-    
-    private func update(_ user: UserProfile?) {
-        guard let user = user else {
-            self.nameLabel.text = "Name : "
-            self.loginLabel.text = "Github id : "
-            self.followerLabel.text = "followers : 0"
-            self.followingLabel.text = "following : 0"
-            self.firstDateLabel.text = "first date : yesterday"
-            self.latestUpdateLabel.text = "latest update : today"
-            self.thumbnail.image = nil
-            return
-        }
-        self.nameLabel.text = "Name : " + user.name
-        self.loginLabel.text = "Github id : " + user.login
-        self.followerLabel.text = "followers : \(user.followers)"
-        self.followingLabel.text = "following : \(user.following)"
-        self.firstDateLabel.text = "first date : \(user.firstDate)"
-        self.latestUpdateLabel.text = "latest update : \(user.latestupdateDate)"
-        self.thumbnail.kf.setImage(with: user.avatarUrl)
     }
 }
 

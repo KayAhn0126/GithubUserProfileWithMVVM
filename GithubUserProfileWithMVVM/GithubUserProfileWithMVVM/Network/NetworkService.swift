@@ -6,6 +6,7 @@
 
 import Foundation
 import Combine
+import UIKit
 
 ///// Defines the Network service errors.
 enum NetworkError: Error {
@@ -28,8 +29,10 @@ final class NetworkService {
         }
         
         return session
-            .dataTaskPublisher(for: request)
+            .dataTaskPublisher(for: request) // URLSession.DataTaskPublisher 타입 반환
+                                            // URLSession.DataTaskPublisher = A publisher that delivers the results of performing URL session data tasks.
             .tryMap { result -> Data in
+                // tryMap -> Transforms all elements from the upstream publisher with a provided error-throwing closure.
                 guard let response = result.response as? HTTPURLResponse,
                       (200..<300).contains(response.statusCode)
                 else {

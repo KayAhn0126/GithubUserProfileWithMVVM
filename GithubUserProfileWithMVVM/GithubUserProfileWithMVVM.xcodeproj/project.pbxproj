@@ -92,6 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				941BDB4E2842570D00DF0BFC /* SearchViewController.swift */,
+				941BDB1C2842567A00DF0BFC /* Main.storyboard */,
+				941BDB212842567B00DF0BFC /* LaunchScreen.storyboard */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -131,10 +133,7 @@
 				941BDB182842567A00DF0BFC /* SceneDelegate.swift */,
 				941BDB4B284256B900DF0BFC /* Utils */,
 				941BDB46284256AD00DF0BFC /* Network */,
-				941BDB1C2842567A00DF0BFC /* Main.storyboard */,
 				941BDB52284257DC00DF0BFC /* Model */,
-				941BDB1F2842567B00DF0BFC /* Assets.xcassets */,
-				941BDB212842567B00DF0BFC /* LaunchScreen.storyboard */,
 				6A6A506428F0597900C3B3A4 /* ViewModel */,
 				6A6A506128F0596400C3B3A4 /* View */,
 				941BDB242842567B00DF0BFC /* Info.plist */,
@@ -180,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				941BDB502842574700DF0BFC /* UserProfile.swift */,
+				941BDB1F2842567B00DF0BFC /* Assets.xcassets */,
 			);
 			path = Model;
 			sourceTree = "<group>";
