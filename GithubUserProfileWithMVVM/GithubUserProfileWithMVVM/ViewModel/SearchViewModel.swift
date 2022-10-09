@@ -74,7 +74,7 @@ final class SearchViewModel {
             .sink { completion in
                 switch completion {
                 case.failure(let error):
-                    self.selectedUser.value = nil
+                    self.selectedUser.send(nil)
                     print("Error Code : \(error)")
                 case.finished :
                     print("Completed : \(completion)")
