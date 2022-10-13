@@ -56,7 +56,7 @@ class UserProfileViewController: UIViewController {
                 self.followingLabel.text = self.viewModel.following
                 self.firstDateLabel.text = self.viewModel.firstDate
                 self.latestUpdateLabel.text = self.viewModel.latestUpdate
-                self.thumbnail.kf.setImage(with: self.viewModel.avatarUrl)
+                self.thumbnail.kf.setImage(with: viewModel.avatarUrl, options: [.cacheMemoryOnly])
             }.store(in: &subscriptions)
     }
 }
